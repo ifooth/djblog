@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<uwsgi>
+    <chdir>/usr/local/apollo</chdir>    
+    <module>apollo.wsgi:application</module>
+    <socket>/var/run/apollo/apollo.sock</socket>
+    <pidfile>/var/run/apollo/apollo.pid</pidfile>
+    <daemonize>/var/log/uwsgi/apollo.log</daemonize>
+    <master />
+    <workers>2</workers>
+</uwsgi>
