@@ -3,12 +3,11 @@
 # yc@2011/08/31
 
 import re
-from django.conf import settings
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 
 def get_page(objs, page):
 	'''分页'''
-	paginator = Paginator(objs, settings.PER_PAGE)
+	paginator = Paginator(objs, 5)
 	
 	try:
 		ret = paginator.page(page)

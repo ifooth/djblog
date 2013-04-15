@@ -4,12 +4,12 @@
 
 import datetime, urllib, re
 
-import utils
 from django.http import Http404, HttpResponse
-from django.conf import settings
 from django.template import RequestContext
 from django.shortcuts import render_to_response
+
 from blog.models import Post, Page
+from utils import utils
 
 def home(request):
 	'''首页'''
@@ -20,7 +20,7 @@ def home(request):
 
 	return render_to_response('index.html', {
 		'index': True,
-		'keywords': settings.SITE_DESC,
+		'keywords': 'Joe的个人博客',
 		'posts': utils.get_page(Post.objects.all(), page),
 	}, context_instance=RequestContext(request))
 

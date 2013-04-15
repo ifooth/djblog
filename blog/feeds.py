@@ -7,12 +7,12 @@ from django.conf import settings
 from django.contrib.syndication.views import Feed
 
 class LatestPostFeed(Feed):
-	title = settings.SITE_TITLE
+	title = 'Joe的个人博客'
 	link = 'feed'
-	description  = settings.SITE_DESC
+	description  = "Joe的个人博客"
 
 	def items(self):
-		return Post.objects.all()[:settings.RECENT_COUNT]
+		return Post.objects.all()[:5]
 
 	def item_title(self, item):
 		return item.title
