@@ -48,7 +48,7 @@ def check_env():
         if exists('%s.old'%project['home']):
             run('rm -rf %s.old'%project['home'])         
         run('mv -f %s %s.old'%(project['home'],project['home'])) 
-    run('mkdir %s'%project['home'])
+    #run('mkdir %s'%project['home']) #修复deploy时 代码复制到错误文件夹
 
     if not exists(project['run']):
         run('mkdir %s'%project['run'])
@@ -62,7 +62,7 @@ def clone_code():
     run('git archive HEAD --remote=%s | tar -x -C %s'%(project['git'],tempdir))
     
 def compile_code():
-    run('python -OO -m compileall %s'%tempdir)
+    run('python -m compileall %s'%tempdir) #issue python -OO优化编译 uwsgi不能正确得到wsgi
     
 def clear_source():
     with cd(tempdir):
@@ -108,7 +108,7 @@ def restart():
             run('kill -s kill $(cat %s) > /dev/null 2>&1'%project['pid'])
         
     with cd(project['home']):
-        run('uwsgi -x etc/uwsgi_djblog.xml')
+        run('/opt/uwsgi/uwsgi -x etc/uwsgi_djblog.xml') #使用自己编译的uwsgi v 1.9.5
 
 ##重启nginx uwsgi
 
