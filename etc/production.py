@@ -4,10 +4,17 @@ DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('Web Master', 'webmaster@ifooth.com'),
 )
 
 MANAGERS = ADMINS
+
+EMAIL_HOST='smtp.ifooth.com'
+EMAIL_HOST_USER='servermaster@ifooth.com'
+EMAIL_HOST_PASSWORD='ljm20121020jupuxe'
+EMAIL_PORT=25
+EMAIL_USE_TLS=False
+SERVER_EMAIL="servermaster@ifooth.com"
 
 DATABASES = {
     'default': {
@@ -61,7 +68,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = '/static/'
+STATIC_ROOT = '/usr/share/djblog/static/'
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"

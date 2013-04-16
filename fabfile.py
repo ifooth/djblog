@@ -14,39 +14,81 @@ Created on 2013/4/14
 #1. 代码编译成最优化字节码文件
 #2. 静态文件放在/usr/share/djblog/static
 
-from fabric.api import run,env,run
+from fabric.api import *
 from fabric.context_managers import cd
 from fabric.contrib.files import exists
 import tempfile
-env.hosts=['root@ifooth.com']
-#env.password='leijiaomin'
+
 
 project={
     'name':'djblog',
     'home':'/usr/local/djblog',
-    'sock':'/run/apollo/djblog.sock',
-    'pid':'/run/apollo/djblog.pid',
-    'log':'/var/log/uwsgi/djblog.log',
-    'git':'git@ifooth.com:djblog.git',    
+    'run':'/run/djblog',
+    'pid':'/run/djblog/djblog.pid',
+    'log':'/var/log/uwsgi',      
 }
 
 tempdir='/tmp/%s'%project['name']
 
-def fresh_code():    
+import json
+cfg=json.load(open('etc/djblog.json'))
+env.hosts=cfg['hosts'].split(' ')
+env.password=cfg['password']
+project['git']=cfg['git']
+
+##环境变量
+
+
+def check_env():
+    if exists(tempdir):
+        run('rm -rf %s'%tempdir)    
+    run('mkdir %s'%tempdir)
+    
+    if exists(project['home']):#修复在linux server 12.04上不能创建目录的bug
+        if exists('%s.old'%project['home']):
+            run('rm -rf %s.old'%project['home'])         
+        run('mv -f %s %s.old'%(project['home'],project['home'])) 
+    run('mkdir %s'%project['home'])
+
+    if not exists(project['run']):
+        run('mkdir %s'%project['run'])
+
+    if not exists(project['log']):
+        run('mkdir %s'%project['log'])
+
+##检测环境完成
+
+def clone_code():    
     run('git archive HEAD --remote=%s | tar -x -C %s'%(project['git'],tempdir))
     
 def compile_code():
     run('python -OO -m compileall %s'%tempdir)
     
-def rm_source():
+def clear_source():
     with cd(tempdir):
         run('find . -name "*.py" |xargs rm -r')
+
+####获取代码完成
+
+def production():
+    with cd(tempdir):
+        run('cp etc/production.pyo djblog/settings.pyo')
+
+def collect_static():
+    with cd(tempdir):
+        run('python manage.py collectstatic')
+
+def syncdb():
+    with cd(tempdir):
+        run('python manage.py syncdb')
+
+
+### djblog生产环境配置
+
+def deploy_code():    
+    run('mv %s %s'%(tempdir,project['home']))    
     
-def mv_code():    
-    run('mv %s %s'%(tempdir,project['home']))
-    
-    
-def flesh_conf():
+def deploy_conf():
     with cd(project['home']):
         run('cp etc/nginx_djblog.conf /etc/nginx/sites-available')
         run('ln -f -s /etc/nginx/sites-available/nginx_djblog.conf /etc/nginx/sites-enabled/nginx_djblog.conf')
@@ -56,35 +98,36 @@ def flesh_conf():
     if exists('/run/nginx.pid'):
         run('nginx -s stop')
     run('nginx')
+
+## 配置文件
+
 def restart():
     if exists(project['pid']):
-        run('kill -s kill $(cat %s)'%project['pid'])
+        with settings(warn_only=True):
+            run('kill -s kill $(cat %s) > /dev/null 2>&1'%project['pid'])
         
     with cd(project['home']):
-        run('uwsgi -x %s/etc/uwsgi_djblog.xml'%project['home'])
+        run('uwsgi -x etc/uwsgi_djblog.xml')
 
-def check_env():
-    if exists(tempdir):
-        run('rm -rf %s'%tempdir) 
-    else:
-        run('mkdir %s'%tempdir)
-    
-    if exists(project['home']):#修复在linux server 12.04上不能创建目录的bug
-        if exists('%s.old'%project['home']):
-            run('rm -rf %s.old'%project['home'])         
-        run('mv -f %s %s.old'%(project['home'],project['home'])) 
-    else:
-        run('mkdir %s'%project['home'])
-def collect_static():
-    run('python manage.py collectstatic')
-def syncdb():
-    run('python manage.py syncdb')
-    
-def deploy():
+##重启nginx uwsgi
+
+def test():
+    pass
+
+def prepare_deploy():
     check_env()
-    fresh_code()
+    clone_code()
     compile_code()
-    rm_source()
-    mv_code()
-    flesh_conf()
+    clear_source()
+    production()
+    collect_static()
+    syncdb()
+
+    test()
+
+def deploy():
+    prepare_deploy()
+
+    deploy_code()
+    deploy_conf()    
     restart()
