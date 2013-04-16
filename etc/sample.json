@@ -1,5 +1,8 @@
 {
 	"host":"",
 	"password":"",
-	"git":""	
+	"git":"",
+	"dbhost":"",
+	"dbuser":"",
+	"dbpasswd":""	
 }

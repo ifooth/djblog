@@ -72,7 +72,7 @@ def clear_source():
 
 def production():
     with cd(tempdir):
-        run('cp etc/production.pyo djblog/settings.pyo')
+        run('cp etc/production.py djblog/settings.py')
 
 def collect_static():
     with cd(tempdir):
@@ -80,6 +80,7 @@ def collect_static():
 
 def syncdb():
     with cd(tempdir):
+        run('mysql -h %s -u%s -p%s < etc/initdb.sql'%(cfg['dbhost'],cfg['dbuser'],cfg['dbpasswd']))
         run('python manage.py syncdb')
 
 
@@ -116,12 +117,12 @@ def test():
 
 def prepare_deploy():
     check_env()
-    clone_code()
-    compile_code()
-    clear_source()
+    clone_code()    
     production()
     collect_static()
     syncdb()
+    compile_code()
+    clear_source()
 
     test()
 
