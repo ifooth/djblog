@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{% load staticfiles %}<!DOCTYPE html>
 <!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
 <!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
@@ -19,12 +19,10 @@
   <link rel="canonical" href="{{ page.get_absolute_url }}" />
   <link href="/feed/" rel="alternate" title="{{ settings.SITE_TITLE }}" type="application/atom+xml" />
   <link href="/favicon.ico" rel="shortcut icon" />
-  <link href="/static/css/screen.css?2" media="screen, projection" rel="stylesheet" type="text/css" />
-  <link href="/static/css/style.css" media="screen, projection" rel="stylesheet" type="text/css" />
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-  <script src="/static/js/main.js"></script>
-  <link href='//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
-  <link href='//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+  <link href="{% static "css/screen.css" %}" media="screen, projection" rel="stylesheet" type="text/css" />
+  <link href="{% static "css/style.css" %}" media="screen, projection" rel="stylesheet" type="text/css" />
+  <script src="{% static "js/jquery-1.10.1.min.js" %}"></script>
+  <script src="{% static "js/main.js" %}"></script> 
   {% if settings.GA_ID %}
     <script type="text/javascript">
       var _gaq = _gaq || [];
@@ -39,7 +37,7 @@
   {% endif %}
 </head>
 <body{% if no_sidebar %} class="no-sidebar"{% endif %}>
-  <header>
+  <header style="background:transparent">
 	<hgroup>
 	  <h1><a href="/">{{ settings.SITE_TITLE }}</a></h1>
 	  {% if settings.SITE_SUBTITLE %}
@@ -78,7 +76,7 @@
   <footer>
 	<p>
 	  Copyright &copy; 2011 - {{ settings.SITE_AUTHOR }} -
-	  <span class="credit">Powered by <a href="https://github.com/ichuan/djblog">djblog</a></span> -
+	  <span class="credit">Powered by <a href="https://github.com/ifooth/djblog">djblog</a></span> -
 	  <span class="credit">Theme by <a href="http://www.octopress.org/">Octopress</a></span>
 	</p>
   </footer>

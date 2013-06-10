@@ -24,6 +24,7 @@ def show_post(request, pid):
 		'sharing': True,
 		'comments': True,
 		'tags': tags,
+		'settings':settings,
 		'keywords': ','.join([i.name for i in tags]),
 	}, context_instance=RequestContext(request))
 
@@ -36,5 +37,6 @@ def list_by_tag(request, name):
 
 	return render_to_response('index.html', {
 		'title': name + ' - Tag',
+		'settings':settings,
 		'posts': utils.get_page(Post.objects.filter(tags__name=name), page),
 	}, context_instance=RequestContext(request))

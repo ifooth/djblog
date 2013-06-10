@@ -1,3 +1,4 @@
+#encoding=utf8
 # Django settings for djblog project.
 
 DEBUG = True
@@ -157,3 +158,17 @@ LOGGING = {
         },
     }
 }
+
+
+# 主题
+THEME = 'classic'
+# 站点名称
+SITE_TITLE = 'ifooth.com'
+# 副标题
+SITE_SUBTITLE = u'All about Joe'
+# 作者
+SITE_AUTHOR = 'joe'
+# 描述
+SITE_DESC = 'joe\'s personal site'
+# 关键字
+SITE_KEYWORD = 'Joe的个人博客'

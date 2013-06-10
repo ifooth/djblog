@@ -6,10 +6,11 @@ import datetime, urllib, re
 
 from django.http import Http404, HttpResponse
 from django.template import RequestContext
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response,render
 
 from blog.models import Post, Page
 from utils import utils
+from django.conf import settings
 
 def home(request):
 	'''首页'''
@@ -18,11 +19,12 @@ def home(request):
 	except ValueError:
 		page = 1
 
-	return render_to_response('index.html', {
+	return render(request,'index.html', {
 		'index': True,
-		'keywords': 'Joe的个人博客',
+		'settings':settings,
+		'keywords': settings.SITE_KEYWORD,
 		'posts': utils.get_page(Post.objects.all(), page),
-	}, context_instance=RequestContext(request))
+	})
 
 def archives(request):
 	'''归档页面'''
@@ -40,6 +42,7 @@ def show_page(request, page):
 	return render_to_response('page.html', {
 		'no_sidebar': True,
 		'page': page,
+		'settings':settings,
 		'comments': page['allow_comment'],
 	}, context_instance=RequestContext(request))
 
@@ -58,6 +61,7 @@ def handler404(request):
 	ret = render_to_response('404.html', {
 		'no_sidebar': True,
 		'path': request.path,
+		'settings':settings,
 	}, context_instance=RequestContext(request))
 	ret.status_code = 404
 
