@@ -1,11 +1,14 @@
 # coding:utf-8
 
+import utils
+
 from django.http import Http404
 from django.template import RequestContext
 from django.shortcuts import render_to_response
+from django.conf import settings
 
-import utils
 from models import Post
+
 
 def show_post(request, pid):
 	'''查看'''

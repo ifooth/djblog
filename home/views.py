@@ -35,6 +35,8 @@ def archives(request):
 	return render_to_response('archives.html', {
 		'posts': posts,
 		'page': page,
+		'settings':settings,
+		'keywords': settings.SITE_KEYWORD,
 	}, context_instance=RequestContext(request))
 
 def show_page(request, page):

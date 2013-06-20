@@ -165,9 +165,9 @@ THEME = 'classic'
 # 站点名称
 SITE_TITLE = 'Cupfox.com'
 # 副标题
-SITE_SUBTITLE = u'All about Joe'
+SITE_SUBTITLE = u'All about Joe Lei'
 # 作者
-SITE_AUTHOR = 'joe'
+SITE_AUTHOR = 'Joe Lei'
 # 描述
 SITE_DESC = 'joe\'s personal site'
 # 关键字
