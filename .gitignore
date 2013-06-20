@@ -5,3 +5,4 @@
 local_settings.py
 bin/crontab.sh
 djblog.json
+wmd.js

@@ -163,7 +163,7 @@ LOGGING = {
 # 主题
 THEME = 'classic'
 # 站点名称
-SITE_TITLE = 'ifooth.com'
+SITE_TITLE = 'Cupfox.com'
 # 副标题
 SITE_SUBTITLE = u'All about Joe'
 # 作者
