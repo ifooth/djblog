@@ -12,4 +12,5 @@ def index(request):
     c = RequestContext(request)
     posts = Post.objects.all()
     c.update({'posts':posts})
+
     return HttpResponse(t.render(c))
