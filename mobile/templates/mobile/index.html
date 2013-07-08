@@ -1,0 +1,10 @@
+{% extends "mobile/base.html" %}
+
+{% block content %}
+{% for post in posts %}
+<div data-role="content">
+{{ post.content|safe }}  
+    </div>
+    <hr />
+ {% endfor %}
+ {% endblock %}
