@@ -2,8 +2,9 @@
 <uwsgi>
     <chdir>/usr/local/djblog</chdir>    
     <module>djblog.wsgi:application</module>
-    <socket>/var/run/djblog/djblog.sock</socket>
-    <pidfile>/var/run/djblog/djblog.pid</pidfile>
+    <socket>/var/run/uwsgi/djblog.sock</socket>
+    <chmod-socket>777</chmod-socket>
+    <pidfile>/var/run/uwsgi/djblog.pid</pidfile>
     <daemonize>/var/log/uwsgi/djblog.log</daemonize>
     <master />
     <workers>2</workers>
